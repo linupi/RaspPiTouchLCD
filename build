@@ -1,4 +1,21 @@
 #!/bin/bash
 
 # Compile helloWorld.c
+echo 'compiling helloWorld.c'
 gcc -std=gnu99 helloWorld.c lib/lib_PD161704A.c  -o helloWorld  -I /usr/local/include -L /usr/local/lib -l wiringPi
+echo 'run with sudo ./helloWorld'
+
+# Compile geometry.c
+echo 'compiling geometry.c'
+gcc -std=gnu99 geometry.c lib/lib_PD161704A.c  -o geometry  -I /usr/local/include -L /usr/local/lib -l wiringPi
+echo 'run with sudo ./geometry'
+
+# Compile images.c
+echo 'compiling images.c'
+gcc -std=gnu99 images.c lib/lib_PD161704A.c lib/bmpLoad.c  -o images  -I /usr/local/include -L /usr/local/lib -l wiringPi
+echo 'run with sudo ./images'
+
+# Compile touch.c
+echo 'compiling touch.c'
+gcc -std=gnu99 touch.c lib/lib_PD161704A.c lib/lib_XPT2046.c  -o touch  -I /usr/local/include -L /usr/local/lib -l wiringPi
+echo 'run with sudo ./touch'

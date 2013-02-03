@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Compile helloWorld.c
+gcc -std=gnu99 helloWorld.c lib/lib_PD161704A.c  -o helloWorld  -I /usr/local/include -L /usr/local/lib -l wiringPi

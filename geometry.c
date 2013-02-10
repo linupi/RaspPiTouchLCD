@@ -29,7 +29,7 @@
 
 void main()
 {
-    lcd_init();
+    lcd_init(BLUE);
 
     //draw pixel
     lcd_draw_pixel(GREEN,110,20);
@@ -38,6 +38,7 @@ void main()
     
     //draw line
     lcd_draw_line(YELLOW,0,50,240,50);
+    lcd_draw_thin_line(YELLOW,0,60,240,60);
     
     //draw circle
     lcd_draw_circle(WHITE,120,160,20);

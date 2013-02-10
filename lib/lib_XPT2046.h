@@ -31,6 +31,8 @@ int init_touch(void);
 
 int register_touch_isr(void (*func)(void));
 
+void set_touch_calib(float new_mx, float new_bx, float new_my, float new_by);
+
 void read_touch_ADC(unsigned short int* x, unsigned short int* y);
 
 void convert_ADC_to_xy(unsigned short int adc_x, unsigned short int adc_y ,unsigned short int* px_x, unsigned short int* px_y);

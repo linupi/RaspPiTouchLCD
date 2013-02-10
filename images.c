@@ -31,7 +31,7 @@
 
 void main()
 {
-    lcd_init();
+    lcd_init(BLUE);
 
     //load bmp image file
     FILE* fp = fopen("Mandelbrot-rot.bmp", "rb");

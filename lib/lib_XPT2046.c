@@ -33,6 +33,12 @@
 
 #include "lib_XPT2046.h"
 
+float mx=0.1364;
+float bx=-18.8864;
+float my=0.1810;
+float by=-21.8100;
+
+
 int init_touch(void)
 {
      wiringPiSPISetup (TOUCH_SPI_CHANNEL, 500000);
@@ -51,6 +57,13 @@ int reactivate_irq(void)
     return system(command);
 }
 
+void set_touch_calib(float new_mx, float new_bx, float new_my, float new_by)
+{
+	mx=new_mx;
+	bx=new_bx;
+	my=new_my;
+	by=new_by;
+}
 
 int register_touch_isr(void (*func)(void))
 {
@@ -74,17 +87,10 @@ void read_touch_ADC(unsigned short int* x, unsigned short int* y)
 }
 
 void convert_ADC_to_xy(unsigned short int adc_x, unsigned short int adc_y ,unsigned short int* px_x, unsigned short int* px_y)
-{  unsigned short int m1=106,n1=8,m2=109,n2=11,u,v;
-    //X=(240 * AD - 2100* 240) / 1900
-    //Y=(320 * AD - 2100* 320) / 1900
-    //*px_x=(unsigned short int)(240.0+((240.0 * adc_x - 2100.0* 240.0) / 1900.0));
-    //*px_y=(unsigned short int)(320.0+((320.0 * adc_y - 2100.0* 320.0) / 1900.0));
-    u=(unsigned short int)(240.0+((240.0 * adc_x - 2100.0* 240.0) / 1900.0));
-    v=(unsigned short int)(320.0+((320.0 * adc_y - 2100.0* 320.0) / 1900.0));
-    //x=(m1*u)/100+n1;
-    //y=*px_y=(m2*v)/100+n2;
-    *px_x=(m1*u)/100+n1;
-    *px_y=(m2*v)/100+n2;
+{  
+	
+    *px_x=(mx*(float)adc_x+bx);
+    *px_y=(my*(float)adc_y+by);
 }
 
 int get_touch_position(unsigned short int* x, unsigned short int* y)

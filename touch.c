@@ -32,18 +32,15 @@
 
 void printPos(void)
 {
-    unsigned short int x,y,u,v;
+    unsigned short int x,y;
     deactivate_irq();
     if(get_touch_position(&x, &y)==1)
     { 
-        u=(x*105)/100+8;
-        v=(y*109)/100+11;
       
-        printf("Touch event at postion x=%i y=%i u=%i v=%i\n",x,y,u,v);
+        printf("Touch event at postion x=%i y=%i \n",x,y);
         //draw dot
         lcd_draw_dot(RED,x,y);
-        lcd_draw_dot(GREEN,u,v);
-        if(x<130 & x>60 & y<20)
+		if(x<130 & x>60 & y<20)
         {
             lcd_clear_screen(GRAY);
             lcd_draw_rect(BLACK,60, 0, 130, 20);    
@@ -60,8 +57,9 @@ void printPos(void)
 void main()
 {
 
-    lcd_init();
+    lcd_init(LIGHTBLUE);
     init_touch();
+	set_touch_calib(0.133630, -18.240534, 0.178472, -22.353598); // To find the right parameter for your screen please use the touch_calibration app
     
     
     lcd_draw_rect(BLACK,60, 0, 130, 20);    

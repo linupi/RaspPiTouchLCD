@@ -86,7 +86,7 @@ void LCD_WRITE_DATA(unsigned short int data);
 * Output         : None
 * Return         : None
 ******************************************************************************/
-void lcd_init(void);
+void lcd_init(unsigned short int bgcolor);
 
 /******************************************************************************
 * Function Name  : lcd_clear_screen
@@ -159,10 +159,26 @@ void lcd_display_char_col_row(  unsigned char ch_asc,
 * Return         : None
 ******************************************************************************/
 void lcd_display_string_col_row(unsigned char *str, 
-						unsigned int color_front, 
-						unsigned int color_background, 
-						unsigned char x, 
-						unsigned char y );
+								unsigned short int color_front, 
+								unsigned short int color_background, 
+								unsigned char x, 
+								unsigned char y );
+
+/******************************************************************************
+ * Function Name  : lcd_display_string_col_row
+ * Description    : *str: address of string data. 
+ x: the xth row(0~30).
+ y: the yth column(0~20).
+ color_front, color_background.
+ * Input          : None
+ * Output         : None
+ * Return         : None
+ ******************************************************************************/
+void lcd_display_string_px(unsigned char *str, 
+						   unsigned short int color_front, 
+						   unsigned short int color_background, 
+						   unsigned short int x, 
+						   unsigned short int y );
 
 /******************************************************************************
 * Function Name  : lcd_draw_pixel
@@ -199,6 +215,13 @@ unsigned char lcd_draw_line(
                           short int y1,
                           short int x2,
                           short int y2 );
+
+unsigned char lcd_draw_thin_line(  
+								 unsigned short int line_color,
+								 short int x1,
+								 short int y1,
+								 short int x2,
+								 short int y2 );
 
 /******************************************************************************
 * Function Name  : lcd_draw_circle

@@ -29,7 +29,7 @@
 
 void main()
 {
-    lcd_init();
+    lcd_init(BLUE);
 
        // display two characters at positions given through row and column number	
     unsigned char ch_asc = 'A';

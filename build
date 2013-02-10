@@ -19,3 +19,8 @@ echo 'run with sudo ./images'
 echo 'compiling touch.c'
 gcc -std=gnu99 touch.c lib/lib_PD161704A.c lib/lib_XPT2046.c  -o touch  -I /usr/local/include -L /usr/local/lib -l wiringPi
 echo 'run with sudo ./touch'
+
+# Compile touch_calibration.c
+echo 'compiling touch_calibration.c'
+gcc -std=gnu99 touch_calibration.c lib/lib_PD161704A.c lib/lib_XPT2046.c  -o touch_calibration  -I /usr/local/include -L /usr/local/lib -l wiringPi
+echo 'run with sudo ./touch_calibration'

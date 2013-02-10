@@ -138,7 +138,7 @@ void LCD_WRITE_DATA(unsigned short int data)
 * Output         : None
 * Return         : None
 ******************************************************************************/
-void lcd_init(void)
+void lcd_init(unsigned short int bgcolor)
 {
     	if (wiringPiSetupGpio () == -1)
                 exit (1) ;
@@ -236,7 +236,7 @@ void lcd_init(void)
 
 	usleep(20);
 	
-	lcd_clear_screen(BLUE);
+	lcd_clear_screen(bgcolor);
 }
 
 /******************************************************************************
@@ -407,8 +407,8 @@ void lcd_display_char_col_row  (unsigned char ch_asc,
 * Return         : None
 ******************************************************************************/
 void lcd_display_string_col_row(unsigned char *str, 
-						unsigned int color_front, 
-						unsigned int color_background, 
+						unsigned short int color_front, 
+						unsigned short int color_background, 
 						unsigned char x, 
 						unsigned char y )
 {
@@ -419,6 +419,39 @@ void lcd_display_string_col_row(unsigned char *str,
 		{
 			x=0;
 			if(++y>=20)
+			{
+				y=0;
+			}
+		}
+		str ++;
+    }
+}
+
+/******************************************************************************
+ * Function Name  : lcd_display_string_col_row
+ * Description    : *str: address of string data. 
+ x: the xth row(0~30).
+ y: the yth column(0~20).
+ color_front, color_background.
+ * Input          : None
+ * Output         : None
+ * Return         : None
+ ******************************************************************************/
+void lcd_display_string_px(unsigned char *str, 
+								unsigned short int color_front, 
+								unsigned short int color_background, 
+								unsigned short int x, 
+								unsigned short int y )
+{
+	while (*str) 
+	{ 
+		lcd_display_char_px( *str, color_front, color_background, x, y);
+		x=x+8;
+		if(x>=240)
+		{
+			x=0;
+			y=y+16;
+			if(y>=320)
 			{
 				y=0;
 			}
@@ -551,6 +584,66 @@ unsigned char lcd_draw_line(
 		else
 		{
 			lcd_draw_dot ( line_color, x, y ) ;
+		}
+		x += tx ;
+	}
+	return 0;
+}
+
+unsigned char lcd_draw_thin_line(  
+							unsigned short int line_color,
+							short int x1,
+							short int y1,
+							short int x2,
+							short int y2 )
+{
+	short int dx , dy;
+	short int tx , ty;
+	short int inc1 , inc2;
+	short int d , iTag;
+	short int x , y;
+	lcd_draw_pixel( line_color , x1 , y1 );
+	if( x1 == x2 && y1 == y2 )	
+	{
+		return 1;
+	}
+	iTag = 0;
+	dx = ( x2 - x1 );
+	if(dx < 0) dx=-dx;
+	dy = ( y2 - y1 );
+	if(dy < 0) dy=-dy;
+	if( dx < dy )	
+	{
+		iTag = 1 ;
+		Swap ( &x1, &y1 );
+		Swap ( &x2, &y2 );
+		Swap ( &dx, &dy );
+	}
+	tx = ( x2 - x1 ) > 0 ? 1 : -1;	   
+	ty = ( y2 - y1 ) > 0 ? 1 : -1;
+	x = x1;
+	y = y1;
+	inc1 = 2 * dy;
+	inc2 = 2 * ( dy - dx );
+	d = inc1 - dx ;
+	while( x != x2 )	 
+	{
+		if( d < 0 )
+		{
+			d += inc1 ;
+		}
+		else
+		{
+			y += ty ;
+			d += inc2 ;
+		}
+		if( iTag )
+		{
+			lcd_draw_pixel ( line_color, y, x ) ;
+		}
+		else
+		{
+			lcd_draw_pixel ( line_color, x, y ) ;
 		}
 		x += tx ;
 	}
